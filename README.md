@@ -1,2 +1,2 @@
 # X + Y
-experiment with X + Y posets
+experiment with X + Y posets (n x n lattices)
