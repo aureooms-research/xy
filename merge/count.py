@@ -8,23 +8,25 @@ def mergesort ( whole , half ) :
 	center = half * 2
 	right = 0
 
+	while left == 0 and half < whole :
+
+		boxes = whole // center
+		left = whole % center
+
+		count += boxes * ( center - 1 ) # merge 2^k sized boxes
+
+		half <<= 1
+		center <<= 1
+
 	while half < whole :
 
-		if left == 0 :
-			boxes = whole // center
-			left = whole % center
+		if right == 0 : right = half
 
-		else :
-			if right == 0 :
-				count += left + half - 1 # merge left with a 2^k sized box
-				left += half
+		left += right
+		count += left - 1 # merge left with right
 
-			else :
-				count += left + right - 1 # merge left with right
-				left += right
-
-			boxes = ( whole - left ) // center
-			right = ( whole - left ) % center
+		boxes = ( whole - left ) // center
+		right = ( whole - left ) % center
 
 
 		count += boxes * ( center - 1 ) # merge 2^k sized boxes
