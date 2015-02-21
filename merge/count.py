@@ -11,30 +11,23 @@ def mergesort ( whole , half ) :
 	while half < whole :
 
 		if left == 0 :
-			j = whole
-			i = left = j % center
+			boxes = whole // center
+			left = whole % center
 
 		else :
 			if right == 0 :
-				count += left + half - 1
+				count += left + half - 1 # merge left with a 2^k sized box
 				left += half
-				i = left
-				right = ( whole - left ) % center
-				j = whole - right
 
 			else :
-				count += left + right - 1
-				i = left
+				count += left + right - 1 # merge left with right
 				left += right
-				j = whole - right
-				right = ( whole - left ) % center
-				j -= right
+
+			boxes = ( whole - left ) // center
+			right = ( whole - left ) % center
 
 
-		k = i
-		while k < j :
-			count += center - 1
-			k += center
+		count += boxes * ( center - 1 ) # merge 2^k sized boxes
 
 		half <<= 1
 		center <<= 1
