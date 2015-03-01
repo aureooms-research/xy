@@ -1,34 +1,65 @@
-import random
+from matrix import mat , show , subscripts
+from information import partial , comparator
 
-def comparator ( M ) :
 
-	def compare ( i , j ) :
+def grid ( m , n ) :
 
-		return M[i-1][j-1]
+	e = mat( m + 1 , n + 1 )
 
-	return compare
+	for i in range ( m + 1 ) : e[i][0] = 1
+	for j in range ( n + 1 ) : e[0][j] = 1
 
-def mat ( m , n , v = None ) :
-
-	return [ [ v ] * n for _ in range( m ) ]
-
-def show ( matrix ) :
-
-	width = max( len( str( item ) ) for row in matrix for item in row )
-
-	for row in matrix :
-
-		for item in row :
-
-			print( ( "%" + str( width ) + "s" ) % str( item ) , end = " " )
-
-		print( )
+	return e
 
 def linial ( compare , e , i , j ) :
 
+	"""
+
+		>>> compare = comparator( [ [ 0 , 0 ] , [ 0 , 0 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		6
+
+		>>> compare = comparator( [ [ 1 , 0 ] , [ 1 , 0 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		3
+
+		>>> compare = comparator( [ [ -1 , -1 ] , [ -1 , -1 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		1
+
+		>>> compare = comparator( [ [ -1 , -1 ] , [ 0 , 0 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		3
+
+		>>> compare = comparator( [ [ 1 , 1 ] , [ 1 , 1 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		1
+
+		>>> compare = comparator( [ [ 0 , -1 ] , [ 1 , 0 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		4
+
+		>>> compare = comparator( [ [ 0 , -1 ] , [ 1 , 1 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		2
+
+		>>> compare = comparator( [ [ -1 , -1 ] , [ 1 , 0 ] ] )
+		>>> e = grid( 2 , 2 )
+		>>> linial( compare , e , 2 , 2 )
+		2
+
+	"""
+
 	if e[i][j] is None :
 
-		result = compare( i , j )
+		result = compare( i - 1 , j - 1 )
 
 		if result > 0 :
 
@@ -45,54 +76,14 @@ def linial ( compare , e , i , j ) :
 
 	return e[i][j]
 
-def choose ( n , k ) :
-
-	return random.sample( range( n ) , k )
-
-def subscripts ( mi , mj , ni , nj ) :
-
-	for i in range ( mi , mj ) :
-
-		for j in range ( ni , nj ) :
-
-			yield i , j
 
 def main ( m , n ) :
 
-	M = mat( m , n )
-
-	# fill M
-	# M[i][j] = -1 means ai < bj
-	# M[i][j] =  1 means ai > bj
-	# M[i][j] =  0 means ai and bj are incomparable
-
-	positions = sorted( choose( m + n , m ) )
-
-	for i , j in enumerate( positions ) :
-
-		M[i][:j-i] = [ random.randint(  0 , 1 ) ] * ( j - i )
-		M[i][j-i:] = [ random.randint( -1 , 0 ) ] * ( n - j + i )
-
-	for i , j in subscripts ( 0 , m , 0 , n ) :
-
-		if M[i][j] > 0 :
-
-			for k , l in subscripts ( i , m , 0 , j + 1 ) :
-
-				M[k][l] = M[i][j]
-
-		elif M[i][j] < 0 :
-
-			for k , l in subscripts ( 0 , i + 1 , j , n ) :
-
-				M[k][l] = M[i][j]
+	M = partial( m , n )
 
 	compare = comparator( M )
 
-	e = mat( m + 1 , n + 1 )
-
-	for i in range ( m + 1 ) : e[i][0] = 1
-	for j in range ( n + 1 ) : e[0][j] = 1
+	e = grid( m , n )
 
 	linial( compare , e , m , n )
 
