@@ -41,6 +41,19 @@ def transpose ( M , n , m ) :
 
 	return A
 
+def reverse( M ) :
+
+	"""
+
+		>>> M = [ [ 1 , 2 , 3 ] , [ 4 , 5 , 6 ] ]
+		>>> reverse( M )
+		>>> M
+		[[6, 5, 4], [3, 2, 1]]
+
+	"""
+	for row in M : row.reverse( )
+	M.reverse( )
+
 
 def show ( matrix ) :
 

@@ -1,6 +1,6 @@
 from functools import reduce
 from determinant import det
-from matrix import mat , transpose , show , subscripts , parse
+from matrix import mat , transpose , reverse , show , subscripts , parse
 from combinatorics import C
 from information import partial , comparator
 
@@ -129,6 +129,7 @@ def main ( lines ) :
 	if n > m :
 
 		M = transpose( M , m , n )
+		reverse( M )
 		m , n = n , m
 
 	print( "partial information" )
