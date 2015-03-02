@@ -1,4 +1,4 @@
-from matrix import mat , show , subscripts
+from matrix import mat , show , subscripts , parse
 from information import partial , comparator
 
 
@@ -77,11 +77,7 @@ def linial ( compare , e , i , j ) :
 	return e[i][j]
 
 
-def main ( m , n ) :
-
-	M = partial( m , n )
-
-	compare = comparator( M )
+def compute ( compare , m , n ) :
 
 	e = grid( m , n )
 
@@ -91,15 +87,28 @@ def main ( m , n ) :
 
 		if e[i][j] is None : e[i][j] = 0
 
-	print( "partial information" )
-	show( M )
 	print( "count of linear extensions" )
-	show( e )
+	print( show( e ) , end = "" )
 
 	return e[m][n]
 
+
+def main ( lines ) :
+
+	M = parse( lines )
+	m = len( M )
+	n = 0 if m == 0 else len( M[0] )
+
+	print( "partial information" )
+	print( show( M ) , end = "" )
+
+	compare = comparator( M )
+
+	print( compute( compare , m , n ) )
+
+
 if __name__ == "__main__" :
 
-	import sys
+	import fileinput
 
-	print( main( *map( int , sys.argv[1:] ) ) )
+	main( fileinput.input( ) )

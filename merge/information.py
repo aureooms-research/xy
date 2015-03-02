@@ -1,11 +1,9 @@
 
-from matrix import mat , subscripts
+from matrix import subscripts
 from combinatorics import choose
 from random import randint
 
-def partial ( m , n ) :
-
-	M = mat( m , n )
+def partial ( M , m , n ) :
 
 	# fill M
 	# we assume that for all j > i --> ai < aj and bi < bj
@@ -44,7 +42,7 @@ def partial ( m , n ) :
 def comparator ( M ) :
 
 	"""
-
+		>>> from matrix import mat
 		>>> M = mat( 3 , 2 )
 		>>> compare = comparator( M )
 		>>> for i , j in subscripts( 0 , 3 , 0 , 2 ) : M[i][j] = 2 * i + j
@@ -69,3 +67,18 @@ def comparator ( M ) :
 
 	return compare
 
+
+def main ( m , n ) :
+
+	from matrix import mat , show
+
+	M = mat( m , n )
+	partial( M , m , n )
+	print( show( M ) , end = "" )
+
+
+if __name__ == "__main__" :
+
+	import sys
+
+	main( *map( int , sys.argv[1:] ) )

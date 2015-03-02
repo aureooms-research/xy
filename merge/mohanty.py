@@ -1,6 +1,6 @@
 from functools import reduce
 from determinant import det
-from matrix import mat , show , subscripts
+from matrix import mat , transpose , show , subscripts , parse
 from combinatorics import C
 from information import partial , comparator
 
@@ -103,33 +103,44 @@ def mohanty ( compare , Mo , m , n ) :
 		Mo[i][j] = C( b - a , j - i + 1 )
 
 
-def main ( m , n ) :
-
-	m , n = max( m , n ) , min( m , n )
-
-	M = partial( m , n )
-
-	compare = comparator( M )
+def compute ( compare , m , n ) :
 
 	Mo = mat( m , m )
 
 	mohanty( compare , Mo , m , n )
 
-	print( "partial information" )
-	show( M )
 	print( "mohanty matrix" )
-	show( Mo )
+	print( show( Mo ) , end = "" )
 
 	d = det( Mo , m )
 
 	print( "after gaussian elimination" )
-	show( Mo )
+	print( show( Mo ) , end = "" )
 
 	return d
 
 
+def main ( lines ) :
+
+	M = parse( lines )
+	m = len( M )
+	n = 0 if m == 0 else len( M[0] )
+
+	if n > m :
+
+		M = transpose( M , m , n )
+		m , n = n , m
+
+	print( "partial information" )
+	print( show( M ) , end = "" )
+
+	compare = comparator( M )
+
+	print( compute( compare , m , n ) )
+
+
 if __name__ == "__main__" :
 
-	import sys
+	import fileinput
 
-	print( main( *map( int , sys.argv[1:] ) ) )
+	main( fileinput.input( ) )
