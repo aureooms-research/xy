@@ -9,6 +9,42 @@ def mohanty ( compare , Mo , m , n ) :
 
 	"""
 
+		>>> compare = comparator( [ ] )
+		>>> Mo = mat( 0 , 0 )
+		>>> mohanty( compare , Mo , 0 , 0 )
+		>>> abs( det( Mo , 0 ) )
+		1
+
+		>>> compare = comparator( [ [ ] , [ ] , [ ] ] )
+		>>> Mo = mat( 3 , 3 )
+		>>> mohanty( compare , Mo , 3 , 0 )
+		>>> abs( det( Mo , 3 ) )
+		1
+
+		>>> compare = comparator( [ [ -1 ] ] )
+		>>> Mo = mat( 1 , 1 )
+		>>> mohanty( compare , Mo , 1 , 1 )
+		>>> abs( det( Mo , 1 ) )
+		1
+
+		>>> compare = comparator( [ [ 1 ] ] )
+		>>> Mo = mat( 1 , 1 )
+		>>> mohanty( compare , Mo , 1 , 1 )
+		>>> abs( det( Mo , 1 ) )
+		1
+
+		>>> compare = comparator( [ [ 0 ] ] )
+		>>> Mo = mat( 1 , 1 )
+		>>> mohanty( compare , Mo , 1 , 1 )
+		>>> abs( det( Mo , 1 ) )
+		2
+
+		>>> compare = comparator( [ [ 0 , 0 ] , [ 0 , 0 ] ] )
+		>>> Mo = mat( 2 , 2 )
+		>>> mohanty( compare , Mo , 2 , 2 )
+		>>> abs( det( Mo , 2 ) )
+		6
+
 		>>> compare = comparator( [ [ 0 , 0 ] , [ 0 , 0 ] ] )
 		>>> Mo = mat( 2 , 2 )
 		>>> mohanty( compare , Mo , 2 , 2 )
@@ -61,8 +97,8 @@ def mohanty ( compare , Mo , m , n ) :
 
 	for i , j in subscripts( 0 , m , 0 , m ) :
 
-		b = reduce( min , ( t + 1 for t in range( n ) if compare( i , t ) > 0 ) , n + 1 )
-		a = reduce( max , ( t + 1 for t in range( n ) if compare( j , t ) < 0 ) , 0 )
+		b = reduce( min , ( t + 1 for t in range( n ) if compare( i , t ) < 0 ) , n + 1 )
+		a = reduce( max , ( t + 1 for t in range( n ) if compare( j , t ) > 0 ) , 0 )
 
 		Mo[i][j] = C( b - a , j - i + 1 )
 

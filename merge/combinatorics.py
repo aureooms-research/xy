@@ -18,12 +18,11 @@ def C ( n , k ) :
 
 	"""
 
-	if n < 0 or n < k : return 0
+	if n < 0 or k < 0 or n < k : return 0
 
 	k = min( k , n - k )
 
 	if k == 0 : return 1
-	if k < 0 : return ( -1 ) ** ( n - k ) * C( -k - 1 , n - k )
 
 	numer = reduce( mul , range( n , n - k , -1 ) )
 	denom = reduce( mul , range( 1 , k + 1 ) )
