@@ -1,5 +1,5 @@
 
-# Example usage for linial.py and mohanty.py.
+# Example usage for linial.py and mohanty.py
 
 If one generates the file `partial.txt` using
 
