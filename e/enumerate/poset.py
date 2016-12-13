@@ -1,5 +1,6 @@
 
 from itertools import product
+from itertools import combinations
 
 def minima ( t ) :
 
