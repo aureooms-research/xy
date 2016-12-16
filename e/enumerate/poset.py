@@ -1,6 +1,10 @@
-
+from itertools import chain
 from itertools import product
 from itertools import combinations
+
+def nonemptysubsets(iterable):
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(1,len(s) + 1))
 
 def minima ( t ) :
 
@@ -57,16 +61,43 @@ class Poset (object):
       for s in M:
         t = self.elements - s
         for p in minima(t):
-          n = s | {p}
-          if n in N:
-            N[n] += M[s]
+          x = s | {p}
+          if x in N:
+            N[x] += M[s]
           else:
-            N[n] = M[s]
+            N[x] = M[s]
       M = N
 
     return next(iter(M.values()))
 
+  def w(self):
+    n = len(self)
+    M = [{frozenset(): 1}] + [{} for i in range(n)]
+    for i in range(n):
+      for s in M[i]:
+        t = self.elements - s
+        for p in nonemptysubsets(minima(t)):
+          x = s | frozenset(p)
+          j = len(x)
+          if x in M[j]:
+            M[j][x] += M[i][s]
+          else:
+            M[j][x] = M[i][s]
 
+    return next(iter(M[n].values()))
+
+
+class AntichainPoset (Poset):
+
+  class Element (object):
+    def __init__(self):
+      pass
+
+    def __lt__(self,other):
+      return False
+
+  def __init__(self,n):
+     super().__init__(AntichainPoset.Element() for i in range(n))
 
 class ChainPoset (Poset):
 
@@ -105,7 +136,27 @@ class HalfSquarePoset (Poset):
       return x[0]<=y[0] and x[1]<=y[1] and x[0]+x[1] < y[0]+y[1]
 
   def __init__(self,n):
-     super().__init__(map(HalfSquarePoset.Element, combinations(reversed(range(n)),2)))
+     super().__init__(map(HalfSquarePoset.Element, combinations(reversed(range(n+1)),2)))
 
-for i in range(1,100):
-  print(i, SquarePoset(i).e())
+if __name__ == '__main__' :
+
+  import sys
+
+  count, poset, *_ = sys.argv[1:]
+
+  posets = {
+      "square" : SquarePoset ,
+      "halfsquare" : HalfSquarePoset ,
+      "antichain" : AntichainPoset ,
+      "chain" : ChainPoset ,
+  }
+
+  MyPoset = posets[poset]
+
+  if count == 'e' :
+    for i in range(1,100):
+      print(i, MyPoset(i).e())
+
+  if count == 'w' :
+    for i in range(1,100):
+      print(i, MyPoset(i).w())
